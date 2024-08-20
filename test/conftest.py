@@ -2,6 +2,8 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from generic_utils import Common_Utils
+
 
 def pytest_addoption(parser):
     parser.addoption("--browser", default="chrome")
@@ -24,7 +26,7 @@ def setup_and_teardown(request):
 
     driver.maximize_window()
     driver.implicitly_wait(10)
-    driver.get("https://www.google.com/")
+    driver.get(Common_Utils.get_config("basic info", "url"))
     request.cls.driver = driver
     yield
     driver.quit()

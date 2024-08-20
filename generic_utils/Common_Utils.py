@@ -1,4 +1,6 @@
 import datetime
+import os
+from configparser import ConfigParser
 
 import openpyxl
 
@@ -23,6 +25,12 @@ def write_data_into_excel(file, sheet_name, row, column, data):
     sheet = workbook[sheet_name]
     sheet.cell(row, column).value = data
     workbook.save(file)
+
+def get_config(section, option):
+    config = ConfigParser()
+    file = os.path.join(os.path.dirname(os.path.abspath('.')), "test_data\\config.ini")
+    config.read(file)
+    return config.get(section, option)
 
 def get_date(text):
     today = datetime.date.today()

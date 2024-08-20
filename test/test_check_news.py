@@ -10,11 +10,10 @@ from pages.google import GooglePage
 class TestNews:
 
     def test_check_news_is_real_or_fake(self):
-        sheet_name = "Sheet1"
+        sheet_name = Common_Utils.get_config("excel info", "sheet_name")
         search_page = GooglePage(self.driver)
-        file = os.path.join(os.path.dirname(os.path.abspath('.')), "test_data\\Data.xlsx")
+        file = os.path.join(os.path.dirname(os.path.abspath('.')), Common_Utils.get_config("excel info", "excel_path"))
         last_row = Common_Utils.get_row_count(file, sheet_name)
-
         content = Common_Utils.read_data_from_excel(file, sheet_name, last_row, 1)
         search_page.search_news(content)
         search_page.click_on_news_tab()
