@@ -1,5 +1,6 @@
 import datetime
 import os
+import re
 from configparser import ConfigParser
 
 import openpyxl
@@ -34,18 +35,37 @@ def get_config(section, option):
 
 def get_date(text):
     today = datetime.date.today()
-    if str(text).__contains__("hour"):
+    if str(text).find('hour') != -1:
         return today.strftime("%d %b %Y")
-    elif str(text).__contains__("days ago"):
+    elif str(text).find('day') != -1:
         digits = filter(str.isdigit, text)
-        integer_str = int(''.join(digits))
+        integer_str = int(''.join(digits))+ 1
         date_to_print = today - datetime.timedelta(days=integer_str)
         return date_to_print.strftime("%d %b %Y")
-    elif str(text).__contains__("week ago"):
-        return text
-    elif str(text).__contains__("month ago"):
-        return text
-    elif str(text).__contains__("year ago"):
-        return text
+    elif str(text).find('week') != -1:
+        digits = filter(str.isdigit, text)
+        integer_str = (int(''.join(digits)) * 7) + 1
+        date_to_print = today - datetime.timedelta(days=integer_str)
+        return date_to_print.strftime("%d %b %Y")
+    elif str(text).find('month') != -1:
+        digits = filter(str.isdigit, text)
+        integer_str = (int(''.join(digits)) * 30) + 1
+        date_to_print = today - datetime.timedelta(days=integer_str)
+        return date_to_print.strftime("%d %b %Y")
+    elif str(text).find('year') != -1:
+        digits = filter(str.isdigit, text)
+        integer_str = (int(''.join(digits)) * 365) + 1
+        date_to_print = today - datetime.timedelta(days=integer_str)
+        return date_to_print.strftime("%d %b %Y")
     else:
         return text
+
+def replace_special_character_with_space(value):
+    return re.sub(r'[^a-zA-Z0-9]', ' ', value)
+
+def split_string(input_string):
+    # Use regular expression to split the string at the apostrophe
+    parts = re.split(r"[’';]", input_string)
+    # Strip leading and trailing spaces from each part
+    parts = [part.strip() for part in parts]
+    return parts

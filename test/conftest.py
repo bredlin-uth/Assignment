@@ -15,7 +15,6 @@ def setup_and_teardown(request):
     if browser == "chrome":
         chrome_options = Options()
         chrome_options.add_argument("--disable-notifications")
-        chrome_options.add_experimental_option('detach', True)
         driver = webdriver.Chrome(options=chrome_options)
     elif browser == "edge":
         driver = webdriver.Edge()
